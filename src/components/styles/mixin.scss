@@ -1,0 +1,23 @@
+@import 'function';
+@import './var';
+
+// BEM
+// - 中划线 ：仅作为连字符使用，表示某个块或者某个子元素的多单词之间的连接记号。
+// _ 双下划线：双下划线用来连接块和块的子元素
+// _ 单下划线：单下划线用来描述一个块或者块的子元素的一种状态
+
+// 注册一个可以重复使用的模块
+@mixin b($block) {
+  $B: $namespace + '-' + $block !global;
+  .#{$B} { // 插值语句 #{} 可以在选择器或属性名中使用变量
+    @content; // 额外导入的部分将出现在 @content 标志的地方
+  }
+}
+
+@mixin when($state) {
+  @at-root {
+    &.#{$state-prefix + $state} {
+      @content;
+    }
+  }
+}

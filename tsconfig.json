@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["unplugin-vue-define-options"],
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
