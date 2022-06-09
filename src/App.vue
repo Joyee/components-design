@@ -1,7 +1,11 @@
 <template>
   <el-container>
     <el-header>Header</el-header>
-    <el-main>Main</el-main>
+    <el-main>
+      <el-button type="primary">primary</el-button>
+      <el-button type="success">success</el-button>
+      <el-button type="danger">danger</el-button>
+    </el-main>
     <el-footer>Footer</el-footer>
   </el-container>
 </template>

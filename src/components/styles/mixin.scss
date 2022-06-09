@@ -9,7 +9,8 @@
 // 注册一个可以重复使用的模块
 @mixin b($block) {
   $B: $namespace + '-' + $block !global;
-  .#{$B} { // 插值语句 #{} 可以在选择器或属性名中使用变量
+  .#{$B} {
+    // 插值语句 #{} 可以在选择器或属性名中使用变量
     @content; // 额外导入的部分将出现在 @content 标志的地方
   }
 }
@@ -19,5 +20,79 @@
     &.#{$state-prefix + $state} {
       @content;
     }
+  }
+}
+
+@mixin button-size(
+  $padding-vertical,
+  $padding-horizontal,
+  $font-size,
+  $border-radius
+) {
+  padding: $padding-vertical $padding-horizontal;
+  font-size: $font-size;
+  border-radius: $border-radius;
+  &.is-round {
+    padding: $padding-vertical $padding-horizontal;
+  }
+}
+
+@mixin m($modifier) {
+  $selector: &;
+  $currentSelector: '';
+  @each $unit in $modifier {
+    $currentSelector: #{$currentSelector +
+      & +
+      $modifier-separator +
+      $unit +
+      ','};
+  }
+
+  @at-root {
+    #{$currentSelector} {
+      @content;
+    }
+  }
+}
+
+@mixin button-variant($color, $background-color, $border-color) {
+  color: $color;
+  background-color: $background-color;
+  border-color: $border-color;
+
+  &:hover,
+  &:focus {
+    background: mix($--color-white, $background-color, 20%);
+    border-color: mix($--color-white, $border-color, 20%);
+    color: $color;
+  }
+
+  &:active {
+    background: mix(
+      $--color-black,
+      $background-color,
+      $--button-active-shade-percent
+    );
+    border-color: mix(
+      $--color-black,
+      $border-color,
+      $--button-active-shade-percent
+    );
+    color: $color;
+    outline: none;
+  }
+
+  &.is-active {
+    background: mix(
+      $--color-black,
+      $background-color,
+      $--button-active-shade-percent
+    );
+    border-color: mix(
+      $--color-black,
+      $border-color,
+      $--button-active-shade-percent
+    );
+    color: $color;
   }
 }
