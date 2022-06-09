@@ -1,28 +1,19 @@
-// Invoked on the commit-msg git hook by yorkie.
+const msg = require('fs').readFileSync('.git/COMMIT_EDITMSG', 'utf-8').trim()
 
-const chalk = require('chalk')
-const msgPath = process.argv[2]
-
-const msg = require('fs').readFileSync(msgPath, 'utf-8').trim()
-
-const releaseRE = /^v\d/
 const commitRE =
-  /^(revert: )?(feat|fix|docs|dx|refactor|perf|test|workflow|build|ci|chore|types|wip|release|deps|style|merge)(\(.+\))?: .{1,50}/
+  /^(revert: )?(feat|fix|docs|dx|style|refactor|perf|test|workflow|build|ci|chore|types|wip|release)(\(.+\))?: .{1,50}/
+const mergeRe = /^(Merge pull request|Merge branch)/
+if (!commitRE.test(msg)) {
+  if (!mergeRe.test(msg)) {
+    console.log('git commit信息校验不通过')
 
-if (!releaseRE.test(msg) && !commitRE.test(msg)) {
-  console.log()
-  console.error(
-    `  ${chalk.bgRed.white(' ERROR ')} ${chalk.red(
-      `invalid commit message format.`
-    )}\n\n` +
-      chalk.red(
-        `  Proper commit message format is required for automated changelog generation. Examples:\n\n`
-      ) +
-      `    ${chalk.green(`feat: add 'comments' option`)}\n` +
-      `    ${chalk.green(`fix: handle events on blur (close #28)`)}\n\n` +
-      chalk.red(`  See .github/commit-convention.md for more details.\n`)
-  )
-  process.exit(1)
+    console.error(`git commit的信息格式不对, 需要使用 title(scope): desc的格式
+    比如 fix: xxbug
+    feat(test): add new 
+    具体校验逻辑看 scripts/verifyCommit.js
+  `)
+    process.exit(1)
+  }
 } else {
-  console.log(chalk.green('提交格式正常'))
+  console.log('git commit信息校验通过')
 }

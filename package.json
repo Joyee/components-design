@@ -6,14 +6,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "lint": "eslint --fix --ext .ts,.vue src/",
-    "prepare": "husky install && node scripts/huskyHooks.js"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "npm run lint"
-    }
+    "lint": "eslint --fix --ext .ts,.vue src/"
   },
   "dependencies": {
     "vue": "^3.2.25"
