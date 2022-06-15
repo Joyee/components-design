@@ -1,6 +1,6 @@
 <template>
-  <div class="el-input">
-    <input :value="modelValue" class="el-input--inner" @input="onInput" />
+  <div>
+    <input :value="modelValue" @input="onInput" />
   </div>
 </template>
 
@@ -17,13 +17,33 @@ defineProps<{
   modelValue: string
 }>()
 
-const emit = defineEmits<{ (e: 'update:model-value', value: string): void }>()
-
+const emits = defineEmits(['update:modelValue'])
 function onInput(e: Event) {
   const input = e.target as HTMLInputElement
-  emit('update:model-value', input.value)
+  emits('update:modelValue', input.value)
   emitter.emit('validate')
 }
 </script>
 
-<style scoped></style>
+<style lang="scss">
+@import '../styles/mixin';
+@include b(input) {
+  @include m(inner) {
+    -webkit-appearance: none;
+    background-color: #fff;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    box-sizing: border-box;
+    color: #606266;
+    display: inline-block;
+    font-size: inherit;
+    height: 40px;
+    line-height: 40px;
+    outline: 0;
+    padding: 0 15px;
+    transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    width: 100%;
+  }
+}
+</style>

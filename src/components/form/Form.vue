@@ -13,28 +13,27 @@ export default {
 <script setup lang="ts">
 import { Rules } from 'async-validator'
 import { PropType, provide, ref } from 'vue'
-import { FormItem, key } from './type'
 import { emitter } from '../../emitter'
+import { FormItem, key } from './types'
 
 const props = defineProps({
-  model: {
-    type: Object,
-    required: true,
-  },
-  rules: {
-    type: Object as PropType<Rules>,
-  },
+  model: { type: Object, required: true },
+  rules: { type: Object as PropType<Rules> },
+})
+
+provide(key, {
+  model: props.model,
+  rules: props.rules,
 })
 
 const items = ref<FormItem[]>([])
 
-emitter.on('addFormItem', (item) => {
-  items.value.push(item)
+emitter.on('addFormItem', (validate) => {
+  items.value.push(validate)
 })
 
-// 提供一个检查所有输入项的 validate 方法
 function validate(cb: (isValid: boolean) => void) {
-  const tasks = items.value.map((item) => item.validate())
+  const tasks = items.value.map((item) => item.validate)
   Promise.all(tasks)
     .then(() => {
       cb(true)
@@ -44,22 +43,15 @@ function validate(cb: (isValid: boolean) => void) {
     })
 }
 
-provide(key, {
-  model: props.model,
-  rules: props.rules,
-})
-
-defineExpose({
-  validate,
-})
+defineExpose({ validate })
 </script>
 
 <style lang="scss">
-@import '../styles/mixin.scss';
+@import '../styles/mixin';
 @include b(form) {
-  box-sizing: border-box;
   margin-top: 20px;
-  width: 300px;
+  box-sizing: border-box;
   flex-shrink: 0;
+  width: 300px;
 }
 </style>

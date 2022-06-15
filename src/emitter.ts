@@ -1,5 +1,5 @@
 import mitt from 'mitt'
-import { FormItem } from './components/form/type'
+import { FormItem } from './components/form/types'
 
 export type Events = {
   validate: undefined

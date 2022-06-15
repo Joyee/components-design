@@ -8,29 +8,29 @@
 
 <script lang="ts">
 export default {
-  name: 'ElFormItem'
+  name: 'ElFormItem',
 }
 </script>
 
 <script setup lang="ts">
 import Schema from 'async-validator'
-import { inject, ref, onMounted } from 'vue'
-import { key, FormItem } from './type'
+import { inject, onMounted, ref } from 'vue'
+import { key, FormItem } from './types'
 import { emitter } from '../../emitter'
 
 interface Props {
-  label?: string
-  prop?: string
+  label: string
+  prop: string
 }
-
 const props = withDefaults(defineProps<Props>(), {
-  label: '',
   prop: '',
+  label: '',
 })
 
-const formData = inject(key)
-
+// 错误提示
 const error = ref('')
+
+const formData = inject(key)
 
 const o: FormItem = {
   validate,

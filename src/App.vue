@@ -2,15 +2,20 @@
   <el-container>
     <el-header>Header</el-header>
     <el-main>
+      <h2>你的评分：{{ score }}</h2>
+      <Rate v-model="score" @update:model-value="update" />
       <el-button type="primary">primary</el-button>
       <el-button type="success">success</el-button>
       <el-button type="danger">danger</el-button>
 
-      <h2>=======Form=======</h2>
-      <el-form :model="formData" :rules="rules" ref="myForm">
-        <el-form-item prop="name" label="用户名">
-          <el-input v-model="formData.name"></el-input>
+      <el-form ref="myForm" :model="model" :rules="rules">
+        <el-form-item label="用户名：" prop="username">
+          <el-input v-model="model.username" />
         </el-form-item>
+        <el-form-item label="密码：" prop="password">
+          <el-input v-model="model.password" type="password" />
+        </el-form-item>
+        <br />
         <el-form-item>
           <el-button type="primary" @click="login"> 登 录 </el-button>
         </el-form-item>
@@ -22,22 +27,31 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { FormType } from './components/form/type'
+import { FormType } from './components/form/types'
+import Rate from './components/Rate.vue'
 
-const formData = reactive({
-  name: '',
+let score = ref(3)
+
+function update(num: number) {
+  score.value = num
+}
+
+const model = reactive({
+  username: '',
+  password: '',
 })
 const rules = reactive({
-  name: [{ required: true, message: '不能为空' }],
+  username: [{ required: true, message: '请输入用户名！' }],
+  password: [{ required: true, message: '请输入密码！' }],
 })
 
 const myForm = ref<FormType>()
 const login = () => {
   myForm.value?.validate((isValid) => {
     if (isValid) {
-      console.log('====', formData)
+      console.log('校验成功')
     } else {
-      alert('输入错误')
+      alert('请正确填写表单')
     }
   })
 }
